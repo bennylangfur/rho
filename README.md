@@ -1,231 +1,386 @@
-# rho
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BENNY'S MUSIC</title>
+  <!-- Google Fonts for crisp typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --bg-color: #121212;
-      --card-bg: #1e1e1e;
-      --text-color: #f5f5f5;
-      --accent-color: #bb86fc;
+      --bg: #0b0c10;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-gold: #d4af37;
+      --accent-glow: rgba(212, 175, 55, 0.25);
+      --text-main: #f0f0f0;
+      --text-muted: #8a8d93;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      margin: 0;
-      padding: 40px 20px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
+      padding: 60px 20px;
+      /* Subtle radial background glow */
+      background-image: radial-gradient(circle at 50% 10%, #1a1c24 0%, var(--bg) 70%);
+    }
+
+    /* Header Styling */
+    header {
+      text-align: center;
+      margin-bottom: 50px;
     }
 
     h1 {
-      font-size: 2.5rem;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
+      font-family: 'Cinzel', serif;
+      font-size: 3rem;
+      letter-spacing: 6px;
+      font-weight: 800;
+      background: linear-gradient(130deg, #ffffff 30%, var(--accent-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       text-transform: uppercase;
+      margin-bottom: 12px;
     }
 
-    p.subtitle {
-      color: #aaa;
-      margin-bottom: 40px;
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      letter-spacing: 1px;
+      font-weight: 300;
     }
 
-    /* Album Grid View */
-    .grid {
+    /* Grid Gallery */
+    .album-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
       width: 100%;
-      max-width: 1000px;
+      max-width: 1100px;
+      animation: fadeIn 0.6s ease-out;
     }
 
     .album-card {
       background: var(--card-bg);
-      border-radius: 12px;
-      overflow: hidden;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      backdrop-filter: blur(10px);
+      transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
       text-align: center;
-      padding-bottom: 15px;
+      position: relative;
     }
 
     .album-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      transform: translateY(-8px);
+      border-color: var(--accent-gold);
+      box-shadow: 0 12px 30px var(--accent-glow);
     }
 
-    .album-card img {
+    .img-wrapper {
+      position: relative;
       width: 100%;
-      aspect-ratio: 1/1;
+      padding-top: 100%; /* 1:1 Aspect Ratio */
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .img-wrapper img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .album-card:hover .img-wrapper img {
+      transform: scale(1.05);
     }
 
     .album-card h3 {
       font-size: 1.1rem;
-      margin: 12px 10px 0;
+      font-weight: 600;
+      color: var(--text-main);
+      letter-spacing: 0.5px;
     }
 
-    /* Detail View for Download Codes */
-    .detail-view {
+    /* Single Album Detail View */
+    .detail-container {
       display: none;
-      background: var(--card-bg);
-      padding: 30px;
-      border-radius: 12px;
-      max-width: 500px;
       width: 100%;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      max-width: 500px;
+      animation: fadeIn 0.4s ease-out;
     }
 
-    .detail-view img {
-      width: 250px;
-      height: 250px;
-      border-radius: 8px;
+    .detail-card {
+      background: rgba(20, 22, 28, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 35px 30px;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .detail-card img {
+      width: 240px;
+      height: 240px;
+      border-radius: 12px;
       object-fit: cover;
+      margin-bottom: 24px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .detail-card h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .detail-card .instructions {
+      color: var(--text-muted);
+      font-size: 0.95rem;
       margin-bottom: 20px;
     }
 
+    /* Code Box Styling */
     .code-box {
-      background: #111;
-      border: 1px dashed var(--accent-color);
-      padding: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed var(--accent-gold);
+      border-radius: 10px;
+      padding: 14px;
       margin: 10px 0;
       font-family: monospace;
-      font-size: 1.1rem;
-      border-radius: 6px;
+      font-size: 1.15rem;
+      color: var(--accent-gold);
+      letter-spacing: 2px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: color 0.2s ease;
+    }
+
+    .copy-btn:hover {
       color: #fff;
     }
 
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
     .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: var(--accent-color);
-      color: #000;
-      font-weight: bold;
-      border-radius: 20px;
+      flex: 1;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
       text-decoration: none;
       cursor: pointer;
+      transition: all 0.25s ease;
       border: none;
     }
 
-    .btn-back {
-      background: transparent;
-      color: #aaa;
-      border: 1px solid #aaa;
-      margin-right: 10px;
+    .btn-primary {
+      background: var(--accent-gold);
+      color: #000;
+    }
+
+    .btn-primary:hover {
+      background: #e5be48;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      h1 { font-size: 2.2rem; }
+      .album-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+      .album-card h3 { font-size: 0.95rem; }
     }
   </style>
 </head>
 <body>
 
-  <h1>BENNY'S MUSIC</h1>
-  <p class="subtitle" id="sub-header">Choose an album to download</p>
+  <header>
+    <h1>BENNY'S MUSIC</h1>
+    <p class="subtitle" id="subHeader">Choose an album to access download codes</p>
+  </header>
 
   <!-- GALLERY VIEW -->
-  <div class="grid" id="album-grid">
-    <div class="album-card" onclick="showAlbum('rabbit-hole')">
-      <img src="images/rabbit-hole.jpg" alt="Rabbit Hole Orchestra">
+  <main class="album-grid" id="albumGrid">
+    
+    <div class="album-card" onclick="openAlbum('rabbit')">
+      <div class="img-wrapper">
+        <img src="https://via.placeholder.com/400/1e2029/d4af37?text=Rabbit+Hole" alt="Rabbit Hole Orchestra">
+      </div>
       <h3>Rabbit Hole Orchestra</h3>
     </div>
-    <div class="album-card" onclick="showAlbum('morph-dwarf')">
-      <img src="images/morph-dwarf.jpg" alt="Morph Dwarf">
+
+    <div class="album-card" onclick="openAlbum('dwarf')">
+      <div class="img-wrapper">
+        <img src="https://via.placeholder.com/400/1e2029/d4af37?text=Morph+Dwarf" alt="Morph Dwarf">
+      </div>
       <h3>Morph Dwarf</h3>
     </div>
-    <div class="album-card" onclick="showAlbum('forgotten-kingdoms')">
-      <img src="images/forgotten-kingdoms.jpg" alt="Forgotten Kingdoms">
+
+    <div class="album-card" onclick="openAlbum('kingdoms')">
+      <div class="img-wrapper">
+        <img src="https://via.placeholder.com/400/1e2029/d4af37?text=Forgotten+Kingdoms" alt="Forgotten Kingdoms">
+      </div>
       <h3>Forgotten Kingdoms</h3>
     </div>
-    <div class="album-card" onclick="showAlbum('earth-jam')">
-      <img src="images/earth-jam.jpg" alt="Earth Jam">
+
+    <div class="album-card" onclick="openAlbum('earth')">
+      <div class="img-wrapper">
+        <img src="https://via.placeholder.com/400/1e2029/d4af37?text=Earth+Jam" alt="Earth Jam">
+      </div>
       <h3>Earth Jam</h3>
     </div>
-    <div class="album-card" onclick="showAlbum('kaleidoscope-karavan')">
-      <img src="images/kaleidoscope-karavan.jpg" alt="Kaleidoscope Karavan">
+
+    <div class="album-card" onclick="openAlbum('karavan')">
+      <div class="img-wrapper">
+        <img src="https://via.placeholder.com/400/1e2029/d4af37?text=Kaleidoscope+Karavan" alt="Kaleidoscope Karavan">
+      </div>
       <h3>Kaleidoscope Karavan</h3>
     </div>
-  </div>
 
-  <!-- DOWNLOAD DETAILS VIEW -->
-  <div class="detail-view" id="detail-view">
-    <img id="detail-img" src="" alt="Album Cover">
-    <h2 id="detail-title">Album Title</h2>
-    <p>Redeem your download code below:</p>
-    
-    <div id="code-container"></div>
+  </main>
 
-    <button class="btn btn-back" onclick="showGrid()">← Back to Albums</button>
-    <a id="redeem-link" href="#" target="_blank" class="btn">Redeem Code</a>
+  <!-- DETAIL VIEW -->
+  <div class="detail-container" id="detailView">
+    <div class="detail-card">
+      <img id="viewImg" src="" alt="Album Cover">
+      <h2 id="viewTitle"></h2>
+      <p class="instructions">Use one of the download codes below at the redemption page:</p>
+      
+      <div id="codeContainer"></div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="showGallery()">← Back</button>
+        <a id="redeemBtn" href="#" target="_blank" class="btn btn-primary">Redeem Code</a>
+      </div>
+    </div>
   </div>
 
   <script>
-    // EDIT YOUR ALBUM CODES & REDEEM LINKS HERE
+    // EDIT ALBUM DATA HERE
     const albums = {
-      'rabbit-hole': {
+      'rabbit': {
         title: 'Rabbit Hole Orchestra',
-        img: 'images/rabbit-hole.jpg',
+        img: 'https://via.placeholder.com/400/1e2029/d4af37?text=Rabbit+Hole',
         codes: ['RABBIT-2026-X1', 'RABBIT-2026-X2'],
-        redeemUrl: 'https://bandcamp.com/yum'
+        link: 'https://bandcamp.com/yum'
       },
-      'morph-dwarf': {
+      'dwarf': {
         title: 'Morph Dwarf',
-        img: 'images/morph-dwarf.jpg',
-        codes: ['DWARF-99-A', 'DWARF-99-B'],
-        redeemUrl: 'https://bandcamp.com/yum'
+        img: 'https://via.placeholder.com/400/1e2029/d4af37?text=Morph+Dwarf',
+        codes: ['DWARF-99-A'],
+        link: 'https://bandcamp.com/yum'
       },
-      'forgotten-kingdoms': {
+      'kingdoms': {
         title: 'Forgotten Kingdoms',
-        img: 'images/forgotten-kingdoms.jpg',
+        img: 'https://via.placeholder.com/400/1e2029/d4af37?text=Forgotten+Kingdoms',
         codes: ['KINGDOM-77-Q'],
-        redeemUrl: 'https://bandcamp.com/yum'
+        link: 'https://bandcamp.com/yum'
       },
-      'earth-jam': {
+      'earth': {
         title: 'Earth Jam',
-        img: 'images/earth-jam.jpg',
+        img: 'https://via.placeholder.com/400/1e2029/d4af37?text=Earth+Jam',
         codes: ['EARTH-JAM-01'],
-        redeemUrl: 'https://bandcamp.com/yum'
+        link: 'https://bandcamp.com/yum'
       },
-      'kaleidoscope-karavan': {
+      'karavan': {
         title: 'Kaleidoscope Karavan',
-        img: 'images/kaleidoscope-karavan.jpg',
+        img: 'https://via.placeholder.com/400/1e2029/d4af37?text=Kaleidoscope+Karavan',
         codes: ['KARAVAN-88-Z'],
-        redeemUrl: 'https://bandcamp.com/yum'
+        link: 'https://bandcamp.com/yum'
       }
     };
 
-    function showAlbum(key) {
-      const album = albums[key];
-      document.getElementById('album-grid').style.display = 'none';
-      document.getElementById('sub-header').style.display = 'none';
-      
-      document.getElementById('detail-img').src = album.img;
-      document.getElementById('detail-title').innerText = album.title;
-      document.getElementById('redeem-link').href = album.redeemUrl;
+    function openAlbum(key) {
+      const data = albums[key];
+      document.getElementById('albumGrid').style.display = 'none';
+      document.getElementById('subHeader').style.display = 'none';
 
-      const codeContainer = document.getElementById('code-container');
-      codeContainer.innerHTML = '';
-      album.codes.forEach(code => {
-        const box = document.createElement('div');
-        box.className = 'code-box';
-        box.innerText = code;
-        codeContainer.appendChild(box);
+      document.getElementById('viewImg').src = data.img;
+      document.getElementById('viewTitle').innerText = data.title;
+      document.getElementById('redeemBtn').href = data.link;
+
+      const codeBox = document.getElementById('codeContainer');
+      codeBox.innerHTML = '';
+      
+      data.codes.forEach(code => {
+        const div = document.createElement('div');
+        div.className = 'code-box';
+        div.innerHTML = `
+          <span>${code}</span>
+          <button class="copy-btn" onclick="copyCode('${code}', this)">Copy</button>
+        `;
+        codeBox.appendChild(div);
       });
 
-      document.getElementById('detail-view').style.display = 'block';
+      document.getElementById('detailView').style.display = 'block';
     }
 
-    function showGrid() {
-      document.getElementById('detail-view').style.display = 'none';
-      document.getElementById('album-grid').style.display = 'grid';
-      document.getElementById('sub-header').style.display = 'block';
+    function showGallery() {
+      document.getElementById('detailView').style.display = 'none';
+      document.getElementById('albumGrid').style.display = 'grid';
+      document.getElementById('subHeader').style.display = 'block';
+    }
+
+    function copyCode(code, btn) {
+      navigator.clipboard.writeText(code);
+      btn.innerText = 'Copied!';
+      setTimeout(() => { btn.innerText = 'Copy'; }, 2000);
     }
   </script>
+
 </body>
 </html>
