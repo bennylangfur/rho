@@ -314,30 +314,30 @@
     const albums = {
       'rabbit': {
         title: 'Rabbit Hole Orchestra',
-        img: 'https://via.placeholder.com/400/1e2029/d4af37?text=Rabbit+Hole',
+        img: rab.jpg
         codes: ['RABBIT-2026-X1', 'RABBIT-2026-X2'],
         link: 'https://bandcamp.com/yum'
       },
       'dwarf': {
         title: 'Morph Dwarf',
-        img: 'https://via.placeholder.com/400/1e2029/d4af37?text=Morph+Dwarf',
+        img: mor.png
         codes: ['DWARF-99-A'],
         link: 'https://bandcamp.com/yum'
       },
       'kingdoms': {
         title: 'Forgotten Kingdoms',
-        img: 'https://via.placeholder.com/400/1e2029/d4af37?text=Forgotten+Kingdoms',
+        img: for.png
         codes: ['KINGDOM-77-Q'],
         link: 'https://bandcamp.com/yum'
       },
       'earth': {
         title: 'Earth Jam',
-        img: 'https://via.placeholder.com/400/1e2029/d4af37?text=Earth+Jam',
+        img: ear.png
         codes: ['EARTH-JAM-01'],
         link: 'https://bandcamp.com/yum'
       },
       'karavan': {
-        title: 'Kaleidoscope Karavan',
+        title: kal.jpg
         img: 'https://via.placeholder.com/400/1e2029/d4af37?text=Kaleidoscope+Karavan',
         codes: ['KARAVAN-88-Z'],
         link: 'https://bandcamp.com/yum'
