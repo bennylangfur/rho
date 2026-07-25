@@ -1,1 +1,298 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BENNY'S MUSIC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-gold: #d4af37;
+      --accent-glow: rgba(212, 175, 55, 0.25);
+      --text-main: #f0f0f0;
+      --text-muted: #8a8d93;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+      background-image: radial-gradient(circle at 50% 10%, #1a1c24 0%, var(--bg) 70%);
+    }
+
+    header { text-align: center; margin-bottom: 50px; }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 3rem;
+      letter-spacing: 6px;
+      font-weight: 800;
+      background: linear-gradient(130deg, #ffffff 30%, var(--accent-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      letter-spacing: 1px;
+      font-weight: 300;
+    }
+
+    .album-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .album-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.35s ease;
+      text-align: center;
+    }
+
+    .album-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent-gold);
+      box-shadow: 0 12px 30px var(--accent-glow);
+    }
+
+    .img-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .img-wrapper img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    .album-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .detail-container {
+      display: none;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .detail-card {
+      background: rgba(20, 22, 28, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 35px 30px;
+      text-align: center;
+      backdrop-filter: blur(15px);
+    }
+
+    .detail-card img {
+      width: 240px;
+      height: 240px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-bottom: 24px;
+      border: 1px solid var(--card-border);
+    }
+
+    .detail-card h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .code-box {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed var(--accent-gold);
+      border-radius: 10px;
+      padding: 14px;
+      margin: 10px 0;
+      font-family: monospace;
+      font-size: 1.15rem;
+      color: var(--accent-gold);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .copy-btn:hover { color: #fff; }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary { background: var(--accent-gold); color: #000; }
+    .btn-secondary { background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid var(--card-border); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>BENNY'S MUSIC</h1>
+    <p class="subtitle" id="subHeader">Choose an album to access download codes</p>
+  </header>
+
+  <main class="album-grid" id="albumGrid">
+    <div class="album-card" onclick="openAlbum('rabbit')">
+      <div class="img-wrapper"><img src="rab.jpg" alt="Rabbit Hole Orchestra"></div>
+      <h3>Rabbit Hole Orchestra</h3>
+    </div>
+    <div class="album-card" onclick="openAlbum('dwarf')">
+      <div class="img-wrapper"><img src="mor.png" alt="Morph Dwarf"></div>
+      <h3>Morph Dwarf</h3>
+    </div>
+    <div class="album-card" onclick="openAlbum('kingdoms')">
+      <div class="img-wrapper"><img src="for.png" alt="Forgotten Kingdoms"></div>
+      <h3>Forgotten Kingdoms</h3>
+    </div>
+    <div class="album-card" onclick="openAlbum('earth')">
+      <div class="img-wrapper"><img src="ear.png" alt="Earth Jam"></div>
+      <h3>Earth Jam</h3>
+    </div>
+    <div class="album-card" onclick="openAlbum('karavan')">
+      <div class="img-wrapper"><img src="kar.png" alt="Kaleidoscope Karavan"></div>
+      <h3>Kaleidoscope Karavan</h3>
+    </div>
+  </main>
+
+  <div class="detail-container" id="detailView">
+    <div class="detail-card">
+      <img id="viewImg" src="" alt="Album Cover">
+      <h2 id="viewTitle"></h2>
+      <p style="color: var(--text-muted); margin-bottom: 20px;">Use one of the download codes below:</p>
+      
+      <div id="codeContainer"></div>
+
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="showGallery()">← Back</button>
+        <a id="redeemBtn" href="#" target="_blank" class="btn btn-primary">Redeem Code</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const albums = {
+      'rabbit': {
+        title: 'Rabbit Hole Orchestra',
+        img: 'rab.jpg',
+        codes: ['RABBIT-2026-X1', 'RABBIT-2026-X2'],
+        link: 'https://bandcamp.com/yum'
+      },
+      'dwarf': {
+        title: 'Morph Dwarf',
+        img: 'mor.png',
+        codes: ['DWARF-99-A'],
+        link: 'https://bandcamp.com/yum'
+      },
+      'kingdoms': {
+        title: 'Forgotten Kingdoms',
+        img: 'for.png',
+        codes: ['KINGDOM-77-Q'],
+        link: 'https://bandcamp.com/yum'
+      },
+      'earth': {
+        title: 'Earth Jam',
+        img: 'ear.png',
+        codes: ['EARTH-JAM-01'],
+        link: 'https://bandcamp.com/yum'
+      },
+      'karavan': {
+        title: 'Kaleidoscope Karavan',
+        img: 'kar.png',
+        codes: ['KARAVAN-88-Z'],
+        link: 'https://bandcamp.com/yum'
+      }
+    };
+
+    function openAlbum(key) {
+      const data = albums[key];
+      document.getElementById('albumGrid').style.display = 'none';
+      document.getElementById('subHeader').style.display = 'none';
+
+      document.getElementById('viewImg').src = data.img;
+      document.getElementById('viewTitle').innerText = data.title;
+      document.getElementById('redeemBtn').href = data.link;
+
+      const codeBox = document.getElementById('codeContainer');
+      codeBox.innerHTML = '';
+      
+      data.codes.forEach(code => {
+        const div = document.createElement('div');
+        div.className = 'code-box';
+        div.innerHTML = `
+          <span>${code}</span>
+          <button class="copy-btn" onclick="copyCode('${code}', this)">Copy</button>
+        `;
+        codeBox.appendChild(div);
+      });
+
+      document.getElementById('detailView').style.display = 'block';
+    }
+
+    function showGallery() {
+      document.getElementById('detailView').style.display = 'none';
+      document.getElementById('albumGrid').style.display = 'grid';
+      document.getElementById('subHeader').style.display = 'block';
+    }
+
+    function copyCode(code, btn) {
+      navigator.clipboard.writeText(code);
+      btn.innerText = 'Copied!';
+      setTimeout(() => { btn.innerText = 'Copy'; }, 2000);
+    }
+  </script>
+
+</body>
+</html>
